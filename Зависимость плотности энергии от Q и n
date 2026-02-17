@@ -1,0 +1,45 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Параметры
+lambda0 = 330e-9
+c = 3e8
+omega = 2 * np.pi * c / lambda0
+E_in = 1e-6
+
+# Сетка
+Q = np.logspace(5, 8, 50)
+n = np.linspace(2.0, 4.5, 50)
+Q_grid, n_grid = np.meshgrid(Q, n)
+
+# Объём моды зависит от n
+V_grid = (lambda0 / n_grid)**3
+
+# Плотность энергии
+rho_grid = (E_in * Q_grid) / (V_grid * omega)
+
+# Порог
+rho_threshold = 1.97e8
+
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+surf = ax.plot_surface(np.log10(Q_grid), n_grid, np.log10(rho_grid),
+                       cmap='viridis', edgecolor='none', alpha=0.9)
+
+# Отметим пороговую плоскость
+threshold_plane = np.full_like(Q_grid, np.log10(rho_threshold))
+ax.plot_surface(np.log10(Q_grid), n_grid, threshold_plane,
+                color='red', alpha=0.3, label='Порог рождения пары')
+
+ax.set_xlabel('lg(Q)', fontsize=12)
+ax.set_ylabel('Показатель преломления n', fontsize=12)
+ax.set_zlabel('lg(ρ) (Дж/м³)', fontsize=12)
+ax.set_title('Зависимость плотности энергии от Q и n', fontsize=14)
+
+fig.colorbar(surf, ax=ax, shrink=0.5, aspect=15, label='lg(ρ)')
+
+plt.tight_layout()
+plt.savefig('graph3_rho_3d.png', dpi=300)
+plt.show()
