@@ -1,0 +1,27 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Сетка
+x = np.linspace(-200, 200, 100)
+y = np.linspace(-200, 200, 100)
+X, Y = np.meshgrid(x, y)
+R = np.sqrt(X**2 + Y**2)
+sigma = 50
+Z = np.exp(-(R/sigma)**2)  # гауссово распределение поля
+
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+surf = ax.plot_surface(X, Y, Z, cmap='hot', edgecolor='none', alpha=0.9)
+ax.set_xlabel('x (нм)', fontsize=11)
+ax.set_ylabel('y (нм)', fontsize=11)
+ax.set_zlabel('|E|² (норм.)', fontsize=11)
+ax.set_title('3D распределение поля в дефектной моде', fontsize=14)
+
+# Добавим цветовую шкалу
+fig.colorbar(surf, ax=ax, shrink=0.5, aspect=10, label='Нормированная интенсивность')
+
+plt.tight_layout()
+plt.savefig('graph2_field_3d.png', dpi=300)
+plt.show()
