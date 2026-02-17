@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Параметры
+lambda0 = 330e-9  # 330 нм в метрах
+n = np.linspace(1.5, 4.5, 100)
+V = (lambda0 / n)**3
+
+# Классический объём фокусировки
+V_classic = (lambda0)**3
+
+plt.figure(figsize=(8, 6))
+plt.plot(n, V*1e22, 'b-', linewidth=2, label='Фотонный кристалл')
+plt.axhline(y=V_classic*1e22, color='r', linestyle='--', label='Классическая фокусировка')
+plt.xlabel('Показатель преломления n')
+plt.ylabel('Объём моды V (×10⁻²² м³)')
+plt.title('Объём локализации дефектной моды')
+plt.grid(True, alpha=0.3)
+plt.legend()
+plt.tight_layout()
+plt.savefig('graph1_volume_vs_n.png', dpi=300)
+plt.show()
