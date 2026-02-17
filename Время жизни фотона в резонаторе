@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Параметры
+lambda0 = 330e-9
+c = 3e8
+omega = 2 * np.pi * c / lambda0
+
+Q = np.logspace(5, 8, 100)
+tau = Q / omega
+
+plt.figure(figsize=(8, 6))
+plt.loglog(Q, tau*1e12, 'b-', linewidth=2)
+plt.axvline(x=1e7, color='r', linestyle='--', alpha=0.7, label='Q = 10⁷')
+plt.xlabel('Добротность Q')
+plt.ylabel('Время жизни τ (пс)')
+plt.title('Время жизни фотона в резонаторе')
+plt.grid(True, alpha=0.3, which='both')
+plt.legend()
+plt.tight_layout()
+plt.savefig('graph2_q_vs_tau.png', dpi=300)
+plt.show()
